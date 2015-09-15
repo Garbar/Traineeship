@@ -1,29 +1,15 @@
 .container
-  .well
-    .media
-      a.pull-left href="#"
-        img.media-object src="http://placehold.it/150x150" /
-      .media-body
-        h4.media-heading Receta 1
-        p.text-right By Francisco
-        p
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-          | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-          | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-          | Aliquam in felis sit amet augue.
-        p
-          a.btn href="#"  Read more
-  .well
-    .media
-      a.pull-left href="#"
-        img.media-object src="http://placehold.it/150x150" /
-      .media-body
-        h4.media-heading Receta 2
-        p.text-right By Anailuj
-        p
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-          | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-          | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-          | Aliquam in felis sit amet augue.
-        p
-          a.btn href="#"  Read more
+  - @products.each do |p|
+    .well
+      .media
+        a.pull-left href="#{product_path(p)}"
+          img.media-object src="#{p.image_url(:list)}" /
+        .media-body
+          / h4.media-heading #{p.title}
+          h4.media-heading
+            = link_to p.title, product_path(p)
+          p.text-right By #{p.user.name}
+          p
+            = p.description.truncate(200).html_safe
+          p
+            a.btn href="#{product_path(p)}"  Read more
