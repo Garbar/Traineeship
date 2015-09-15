@@ -13,3 +13,4 @@
             = p.description.truncate(200).html_safe
           p
             a.btn href="#{product_path(p)}"  Read more
+  = paginate @products
