@@ -29,7 +29,7 @@
         legend Sign Up
         = devise_error_messages!
         / input.form-control.input-lg name="name" placeholder=("Name") type="text" value="" /
-        = f.text_field(:email, placeholder:"Your Name", class: "form-control input-lg")
+        = f.text_field(:name, placeholder:"Your Name", class: "form-control input-lg")
         = f.email_field(:email, placeholder:"Your Email", class: "form-control input-lg")
         = f.password_field(:password, placeholder:"Password", class: "form-control input-lg")
         = f.password_field(:password_confirmation, placeholder:"Confirm Password", class: "form-control input-lg")
