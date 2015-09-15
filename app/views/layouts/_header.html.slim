@@ -17,7 +17,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top
       ul.nav.navbar-nav.navbar-right
         -if user_signed_in?
           .navbar-brand
-            = current_user.name
+            | Welcome, #{current_user.name}
           li
             = link_to 'Sign out', destroy_user_session_path, :method=>'delete'
         -else
