@@ -7,14 +7,15 @@ class ProductsController < ApplicationController
 
   def new
     # @product = current_user.product
-    @product = Product.new
+    # @product = Product.new
+    @product = current_user.products.build
   end
 
   def show
   end
 
   def create
-    @product = Product.new(product_params)
+    @product = current_user.products.build(product_params)
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product, notice: 'Product was successfully created.' }
