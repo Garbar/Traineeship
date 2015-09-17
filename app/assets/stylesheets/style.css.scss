@@ -81,3 +81,8 @@ main {
 div.field_with_errors div.ui-effects-wrapper {
   display: inline-block !important;
 }
+
+/* Registrations */
+.role-admin, .role-customer, .avatar{
+  display: none;
+}
