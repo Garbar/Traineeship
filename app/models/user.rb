@@ -13,9 +13,31 @@ class User < ActiveRecord::Base
   validates_format_of    :email,    :with  => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
   validates_presence_of    :password, :on=>:create
   validates_confirmation_of    :password, :on=>:create
-  validates_length_of    :password, :within => Devise.password_length, :allow_blank => true
+  validates :password, length: { minimum: 6 }, if: "role == 'user'"
 
-  # validates_presence_of :name
+  with_options if: :is_admin? do |admin|
+    admin.validates :password, length: { minimum: 10 }
+    admin.validates :name, presence: true
+    admin.validates :surname, presence: true
+    admin.validates :avatar, presence: true
+    admin.validates :passport, presence: true
+    admin.validates :date_birth, presence: true
+  end
+
+  with_options if: :is_customer? do |admin|
+    admin.validates :password, length: { minimum: 8 }
+    admin.validates :avatar, presence: true
+    admin.validates :shop_name, presence: true
+  end
+
+  def is_admin?
+    role == "admin"
+  end
+
+  def is_customer?
+    role == "customer"
+  end
+
   enum role: [:user, :customer, :admin]
   mount_uploader :avatar, ImageUploader
   mount_uploader :passport, ImageUploader
