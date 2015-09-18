@@ -8,9 +8,9 @@ module ApplicationHelper
     if user.role == 'user'
       raw "<div class='navbar-brand'>Welcome, #{user.email}</div>"
     elsif user.role == 'admin'
-      raw "<div class='navbar-brand'>Welcome, #{user.name}</div>"
+      raw "<div class='navbar-brand'>Welcome, <a href = #{profile_path}>#{user.name}</a></div>"
     else
-      raw "<div class='navbar-brand'>Welcome, #{user.shop_name}</div>"
+      raw "<div class='navbar-brand'>Welcome, <a href = #{profile_path}>#{user.shop_name}</a></div>"
     end
   end
 

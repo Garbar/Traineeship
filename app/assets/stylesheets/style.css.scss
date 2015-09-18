@@ -86,3 +86,12 @@ div.field_with_errors div.ui-effects-wrapper {
 .role-admin, .role-customer, .avatar{
   display: none;
 }
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}
