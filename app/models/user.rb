@@ -15,8 +15,8 @@ class User < ActiveRecord::Base
   validates_confirmation_of    :password, :on=>:create
   validates_length_of    :password, :within => Devise.password_length, :allow_blank => true
 
-  validates_presence_of :name
-  enum role: [:guest, :customer, :admin]
+  # validates_presence_of :name
+  enum role: [:user, :customer, :admin]
   mount_uploader :avatar, ImageUploader
   mount_uploader :passport, ImageUploader
 end

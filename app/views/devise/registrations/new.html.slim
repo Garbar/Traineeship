@@ -29,7 +29,8 @@
         legend Sign Up
         = devise_error_messages!
         / input.form-control.input-lg name="name" placeholder=("Name") type="text" value="" /
-        = f.select(:role, options_for_select([['User', 1], ['Customer', 2], ['Admin', 3]]), {}, {:class => "form-control input-lg"} )
+        label.control-label Select your role
+        = f.select(:role, options_for_select([['User', 'user'], ['Customer', 'customer'], ['Admin', 'admin']]), {}, {:class => "form-control input-lg"} )
         .role-admin
           .row
             .col-xs-6.col-md-6
