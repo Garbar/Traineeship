@@ -41,4 +41,12 @@ class User < ActiveRecord::Base
   enum role: [:user, :customer, :admin]
   mount_uploader :avatar, ImageUploader
   mount_uploader :passport, ImageUploader
+
+  def allow_product?
+    if self.role ==  'user'
+      return false
+    else
+      return true
+    end
+  end
 end

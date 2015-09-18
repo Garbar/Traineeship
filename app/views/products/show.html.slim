@@ -1,9 +1,12 @@
 .container
   .well
     .media
-      h1 #{@product.title}
+      h1 #{@product.title} #{pro_product(@product)}
       .row
         .col-md-4
           = image_tag "#{@product.image_url(:full)}", alt: "#{@product.title}",  class: "pull-left img-responsive postImg img-thumbnail margin10"
         .col-md-8
+          - if  @product.name_shop? && user_signed_in? && current_user.allow_product?
+            p
+              | Shop: #{@product.name_shop}
           = @product.description.html_safe

@@ -1,14 +1,19 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, :except => [:show, :index]
   before_action :set_product, only: [:show]
+
   def index
-    @products = Product.order("created_at desc")
-    .page(params[:page]).per(10)
+    if user_signed_in?
+      @products = Product.order("created_at desc")
+      .page(params[:page]).per(10)
+    else
+      @products = Product.order("created_at desc")
+      .unpro
+      .page(params[:page]).per(10)
+    end
   end
 
   def new
-    # @product = current_user.product
-    # @product = Product.new
     @product = current_user.products.build
   end
 
@@ -29,12 +34,14 @@ class ProductsController < ApplicationController
   end
 
   private
+
   def set_product
     @product = Product.find(params[:id])
   end
+
   def product_params
     params.require(:product).permit(
-      :title, :description, :image
+      :title, :description, :image, :pro
     )
   end
 end

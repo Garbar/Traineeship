@@ -11,13 +11,12 @@ nav.navbar.navbar-inverse.navbar-fixed-top
       ul.nav.navbar-nav
         li
           a href="#{products_path}"  Products
-        -if user_signed_in?
+        -if user_signed_in? && current_user.allow_product?
           li
             a href="#{new_product_path}"  Add Product
       ul.nav.navbar-nav.navbar-right
         -if user_signed_in?
-          .navbar-brand
-            | Welcome, #{current_user.name}
+          = wellcome_name(current_user)
           li
             = link_to 'Sign out', destroy_user_session_path, :method=>'delete'
         -else

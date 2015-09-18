@@ -8,9 +8,12 @@
           / h4.media-heading #{p.title}
           h4.media-heading
             = link_to p.title, product_path(p)
-          p.text-right By #{p.user.name}
+            = pro_product(p)
           p
             = p.description.truncate(200).html_safe
+          - if  p.name_shop? && user_signed_in? && current_user.allow_product?
+            p
+              | Shop: #{p.name_shop}
           p
             a.btn href="#{product_path(p)}"  Read more
   = paginate @products
