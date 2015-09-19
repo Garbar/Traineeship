@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, :except => [:show, :index]
-  before_action :set_product, only: [:show]
+  before_action :set_product, only: [:show, :purchase]
 
   def index
     if user_signed_in?
@@ -31,6 +31,10 @@ class ProductsController < ApplicationController
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def purchase
+
   end
 
   private

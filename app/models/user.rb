@@ -38,6 +38,13 @@ class User < ActiveRecord::Base
     role == "customer"
   end
 
+  def allow_email?
+    if self.email =~ /\.com$/
+      return false
+    else
+      return true
+    end
+  end
   enum role: [:user, :customer, :admin]
   mount_uploader :avatar, ImageUploader
   mount_uploader :passport, ImageUploader
