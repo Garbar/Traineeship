@@ -8,5 +8,9 @@ $(document).ready ->
 		    # setTimeout (->
 		    # 	$('#add_success').modal 'hide'
 		    #  ), 3000
+  		.on "ajax:error", (event, xhr, status, error) ->
+  			$('#add_success .modal-title').html(data.title)
+  			$('#text_message').html(data.error)
+  			$('#add_success').modal({show:true})
 
 

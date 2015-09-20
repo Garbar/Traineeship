@@ -36,25 +36,36 @@ class ProductsController < ApplicationController
 
   def purchase
     message = ''
-    title = ''
-    if current_user.allow_email?
-      if get_photos == false
-        title = 'Sorry!'
-        message = 'Unfortunately it was not possible to make a purchase now. Try again later'
-        SendAdminError.mail_create(current_user.email).deliver_now
-      else
-        title = 'Hello, user'
-        message = 'Thank you for shopping in our store'
-        SendUser.mail_create(get_photos, current_user.email).deliver_now
-        SendAdmin.mail_create(send_todos).deliver_now
-      end
-    else
+    title = 'Access is denied'
+    error = 'Only registered users can make purchases'
+    if @product.name_shop.blank? && @product.pro?
       title = 'Error!'
-      message = 'Users can not buy products if they have email in the zone com'
+      message = 'This product is not for sale, apologize'
+    else
+      if current_user.allow_product?
+        title = 'Error!'
+        message = 'Only users with role \'User\' can make purchases'
+      else
+        if current_user.allow_email?
+          if get_photos == false
+            title = 'Sorry!'
+            message = 'Unfortunately it was not possible to make a purchase now. Try again later'
+            SendAdminError.mail_create(current_user.email).deliver_now
+          else
+            title = 'Hello, user'
+            message = 'Thank you for shopping in our store'
+            SendUser.mail_create(get_photos, current_user.email).deliver_now
+            SendAdmin.mail_create(send_todos).deliver_now
+          end
+        else
+          title = 'Error!'
+          message = 'Users can not buy products if they have email in the zone com'
+        end
+      end
     end
 
     respond_to do |format|
-      format.json { render json: {status: "ok", mess: message, title: title}}
+      format.json { render json: {status: "ok", mess: message, title: title, error: error}}
     end
   end
 
