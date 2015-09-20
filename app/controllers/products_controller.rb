@@ -47,15 +47,24 @@ class ProductsController < ApplicationController
         message = 'Only users with role \'User\' can make purchases'
       else
         if current_user.allow_email?
-          if get_photos == false
+          if get_photos == 1
             title = 'Sorry!'
             message = 'Unfortunately it was not possible to make a purchase now. Try again later'
             SendAdminError.mail_create(current_user.email).deliver_now
+          elsif get_photos == false
+            title = 'Exception!'
+            message = 'Encountered an error when trying get photos'
           else
-            title = 'Hello, user'
-            message = 'Thank you for shopping in our store'
-            SendUser.mail_create(get_photos, current_user.email).deliver_now
-            SendAdmin.mail_create(send_todos).deliver_now
+            if send_todos == false
+              title = 'Exception!'
+              message = 'Encountered an error when trying send todos'
+              SendAdminError.mail_create(current_user.email).deliver_now
+            else
+              title = 'Hello, user'
+              message = 'Thank you for shopping in our store'
+              SendUser.mail_create(get_photos, current_user.email).deliver_now
+              SendAdmin.mail_create(send_todos).deliver_now
+            end
           end
         else
           title = 'Error!'
@@ -82,24 +91,56 @@ class ProductsController < ApplicationController
   end
 
   def get_photos
-    random_number = (1..5000).to_a.sample
-    response = HTTParty.get("http://jsonplaceholder.typicode.com/photos/#{random_number}")
-    image = JSON.parse(response.body)
-    if image['url'][-6..-1].to_i(16)  > image['thumbnailUrl'][-6..-1].to_i(16)
-      return image['url']
-    else
+    begin
+      sleep_number = (1..6).to_a.sample
+      random_number = (1..5000).to_a.sample
+      if sleep_number > 3
+        sleep(sleep_number)
+        Rails.logger.debug "Response: #{sleep_number}"
+        raise "Exception #: #{sleep_number}"
+      else
+        sleep(sleep_number)
+        # Rails.logger.debug "Response img №2: #{sleep_number}"
+        response = HTTParty.get("http://jsonplaceholder.typicode.com/photos/#{random_number}")
+        image = JSON.parse(response.body)
+        if image['url'][-6..-1].to_i(16)  > image['thumbnailUrl'][-6..-1].to_i(16)
+          return image['url']
+        else
+          return 1
+        end
+      end
+    rescue Exception=>e
+      Rails.logger.error { "Encountered an error when trying get photos, #{e}" }
       return false
     end
   end
 
-  def send_todos
-    response = HTTParty.post("http://jsonplaceholder.typicode.com/todos",
-                             {
-                               :data => { title: 'foo', body: 'bar', userId: 1 }
-                             }
-                             )
-    post = JSON.parse(response.body)
-    post['id']
-  end
 
+  def send_todos
+    tries ||= 3
+    begin
+      sleep_number = (1..6).to_a.sample
+      if sleep_number > 3
+        sleep(sleep_number)
+        Rails.logger.debug "Response send_todos: #{sleep_number}"
+        raise "Exception #: #{sleep_number}"
+      else
+        sleep(sleep_number)
+        response = HTTParty.post("http://jsonplaceholder.typicode.com/todos",
+                                 {
+                                   :data => { title: 'foo', body: 'bar', userId: 1 }
+                                 }
+                                 )
+        post = JSON.parse(response.body)
+        post['id']
+      end
+    rescue Exception=>e
+      Rails.logger.error { "Encountered an error when trying send todos, #{e}" }
+      if (tries -= 1) > 0
+        retry
+      else
+        return false
+      end
+    end
+  end
 end
