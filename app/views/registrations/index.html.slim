@@ -1,2 +1,25 @@
-h1 Registrations#index
-p Find me in app/views/registrations/index.html.slim
+.container
+  .row
+    h2 Select Role
+    ul.ds-btn
+      li
+        a.btn.btn-lg.btn-primary href="#{registration_user_path}"
+          i.glyphicon.glyphicon-user.pull-left
+          span
+            | User
+            br/
+            small Lorem ipsum dolor
+      li
+        a.btn.btn-lg.btn-primary href="#{registration_customer_path}"
+          i.glyphicon.glyphicon-user.pull-left
+          span
+            | Customer
+            br/
+            small Lorem ipsum dolor
+      li
+        a.btn.btn-lg.btn-primary href="#{registration_admin_path}"
+          i.glyphicon.glyphicon-user.pull-left
+          span
+            | Admin
+            br/
+            small Lorem ipsum dolor
