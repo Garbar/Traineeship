@@ -1,7 +1,7 @@
 #wrap.container
   .row
     .col-md-6.col-md-offset-3
-      = form_for(@role, :url => registrations_user_path, :html => {role: 'form', class: "form"}) do |f|
+      = form_for(@role, :url => registrations_user_path, :html => {role: 'form', class: "form"}, validate: true) do |f|
         legend Sign Up as User
         = render "user", :f => f
       br/
