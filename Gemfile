@@ -20,6 +20,7 @@ gem 'mini_magick'
 gem 'kaminari'
 gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
 gem 'httparty'
+gem 'virtus'
 group :development do
   gem 'quiet_assets'
   gem 'meta_request'
