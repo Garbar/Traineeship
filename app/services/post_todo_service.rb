@@ -1,0 +1,3 @@
+class PostTodoService < PurchaseService
+
+end
