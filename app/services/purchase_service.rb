@@ -1,12 +1,8 @@
-class PurchaseError < StandardError
-end
-
-class RequestTimeoutError < TimeoutError
-end
-
 class PurchaseService
-  include HTTParty
-
-  base_uri "jsonplaceholder.typicode.com"
-  sleep_number = (1..6).to_a.sample
+  def call(user)
+    AllowUserService.new(user).call
+    photo = GetPhotoService.new.call
+    todo = PostTodoService.new.call
+    return photo, todo
+  end
 end

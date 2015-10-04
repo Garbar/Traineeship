@@ -11,6 +11,6 @@
               | Shop: #{@product.name_shop}
           - if  @product.name_shop? && user_signed_in? && !current_user.allow_product?
             p
-              = link_to 'Purchase Now', purchase_product_path(@product), remote:true, method:'POST', class: "btn btn-primary btn-lg active purchase-link"
+              = link_to 'Purchase Now', purchase_product_path(@product), method:'POST', class: "btn btn-primary btn-lg active purchase-link"
           = @product.description.html_safe
 = render 'shared/modal_purchase'
