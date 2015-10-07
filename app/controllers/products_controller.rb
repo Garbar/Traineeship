@@ -36,22 +36,26 @@ class ProductsController < ApplicationController
 
   def purchase
     @buy = PurchaseService.new
-    begin
-      answer = @buy.call(current_user)
-      flash[:notice] = "Thank you for shopping in our store!"
-      Rails.logger.debug "GetPhotoService - answer: #{answer}"
-      redirect_to profile_path
-      SendUser.mail_create(answer[0], current_user.email).deliver_now
-      SendAdmin.mail_create(answer[1]).deliver_now
-    rescue ErrorMessages::EmailError, ErrorMessages::RoleError, ErrorMessages::RequestTimeoutError => e
-      flash[:error] = e.message
+    if @product.name_shop.blank? && @product.pro?
+      flash[:error] = 'This product is not for sale, apologize'
       redirect_to root_path
-    rescue ErrorMessages::ImageError, ErrorMessages::AdminTimeoutError  => e
-      SendAdminError.mail_create(current_user.email).deliver_now
-      flash[:error] = e.message
-      redirect_to root_path
+    else
+      begin
+        answer = @buy.call(current_user)
+        flash[:notice] = "Thank you for shopping in our store!"
+        Rails.logger.debug "GetPhotoService - answer: #{answer}"
+        redirect_to profile_path
+        SendUser.mail_create(answer[0], current_user.email).deliver_now
+        SendAdmin.mail_create(answer[1]).deliver_now
+      rescue ErrorMessages::EmailError, ErrorMessages::RoleError, ErrorMessages::RequestTimeoutError => e
+        flash[:error] = e.message
+        redirect_to root_path
+      rescue ErrorMessages::ImageError, ErrorMessages::AdminTimeoutError  => e
+        SendAdminError.mail_create(current_user.email).deliver_now
+        flash[:error] = e.message
+        redirect_to root_path
+      end
     end
-
     # respond_to do |format|
     #   format.json { render json: {status: "ok", mess: message, title: title, error: error}}
     # end
