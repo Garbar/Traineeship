@@ -31,7 +31,6 @@ class FormAdmin
   def save
     if valid?
       persist!
-      true
     else
       false
     end
@@ -40,8 +39,9 @@ class FormAdmin
   private
 
   def persist!
-    user = User.create!(email: email, role: 'customer', password: password, password_confirmation: password, avatar: avatar,
-                        name: name, surname: surname, passport: passport, date_birth: date_birth)
+    @user = User.create!(email: email, role: 'customer', password: password, password_confirmation: password, avatar: avatar,
+                         name: name, surname: surname, passport: passport, date_birth: date_birth)
+    @user.id
   end
 
 end

@@ -13,7 +13,7 @@
                 label.col-md-3.control-label for="name"  Title *
                 .col-md-9
                   = f.text_field(:title, placeholder:"Product Title", class: "form-control")
-              - if current_user.role == "admin"
+              - if can? :make_pro, Product
                 .form-group.text-center
                   = f.check_box :pro
                   label for="pro"  PRO product

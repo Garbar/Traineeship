@@ -13,8 +13,8 @@ class RegistrationsController < ApplicationController
     @role = FormAdmin.new
   end
   def create_user
-    @role = FormUser.new(user_form_params)
-    create(@role.save)
+    @user = FormUser.new(user_form_params)
+    create(@user.save)
   end
   def create_customer
     @role = FormCustomer.new(customer_form_params)
@@ -24,18 +24,8 @@ class RegistrationsController < ApplicationController
     @role = FormAdmin.new(admin_form_params)
     create(@role.save)
   end
-  # def create
-  #   # role = "form_#{params[:role]}".classify.constantize
-  #   # param = "#{params[:role]}_form_params".classify.underscore
-  #   @role = FormUser.new(user_form_params)
-  #   # @role = role.new(eval(param))
-  #   # @role = role.new(param)
-  #   if @role.save
-  #     redirect_to root_path, notice: "User has been created"
-  #   else
-  #     render :user
-  #   end
-  # end
+  private
+
   def deny_user
     if user_signed_in?
       flash[:alert] = I18n.t("devise.failure.already_authenticated")
@@ -43,12 +33,10 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  private
-
-  def create(role)
-    if role
-      Rails.logger.debug "Role.save: #{role}"
-      @user = User.find_by id: role
+  def create(user_id)
+    if user_id
+      Rails.logger.debug "Role.save: #{user_id}"
+      @user = User.find_by id: user_id
       sign_in(@user)
       redirect_to root_path, notice: "User has been created"
     else

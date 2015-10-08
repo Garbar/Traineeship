@@ -1,5 +1,5 @@
 class SendAdmin < ApplicationMailer
-  default to: Proc.new { User.where(role: 2).pluck(:email) }
+  default to: Proc.new { User.admins.pluck(:email) }
 
   def mail_create(data)
     @data = data

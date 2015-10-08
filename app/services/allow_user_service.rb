@@ -4,7 +4,6 @@ class AllowUserService
   end
   def call
     raise ErrorMessages::EmailError unless allow_email?
-    raise ErrorMessages::RoleError if @user.role ==  0
   end
 
   private

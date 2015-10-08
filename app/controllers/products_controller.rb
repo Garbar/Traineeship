@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
-  include HTTParty
-  before_action :authenticate_user!, :except => [:show, :index]
+  load_and_authorize_resource
+  # before_action :authenticate_user!, :except => [:show, :index]
   before_action :set_product, only: [:show, :purchase]
 
   def index
@@ -36,7 +36,7 @@ class ProductsController < ApplicationController
 
   def purchase
     @buy = PurchaseService.new
-    if @product.name_shop.blank? && @product.pro?
+    if @product.name_shop.blank?
       flash[:error] = 'This product is not for sale, apologize'
       redirect_to root_path
     else
@@ -44,16 +44,16 @@ class ProductsController < ApplicationController
         answer = @buy.call(current_user)
         flash[:notice] = "Thank you for shopping in our store!"
         Rails.logger.debug "GetPhotoService - answer: #{answer}"
-        redirect_to profile_path
+        redirect_to root_path
         SendUser.mail_create(answer[0], current_user.email).deliver_now
         SendAdmin.mail_create(answer[1]).deliver_now
-      rescue ErrorMessages::EmailError, ErrorMessages::RoleError, ErrorMessages::RequestTimeoutError => e
+      rescue ErrorMessages::EmailError, ErrorMessages::RequestTimeoutError => e
         flash[:error] = e.message
-        redirect_to root_path
+        redirect_to @product
       rescue ErrorMessages::ImageError, ErrorMessages::AdminTimeoutError  => e
         SendAdminError.mail_create(current_user.email).deliver_now
         flash[:error] = e.message
-        redirect_to root_path
+        redirect_to @product
       end
     end
     # respond_to do |format|
@@ -72,58 +72,4 @@ class ProductsController < ApplicationController
       :title, :description, :image, :pro
     )
   end
-
-  # def get_photos
-  #   begin
-  #     sleep_number = (1..6).to_a.sample
-  #     random_number = (1..5000).to_a.sample
-  #     if sleep_number > 3
-  #       sleep(sleep_number)
-  #       Rails.logger.debug "Response: #{sleep_number}"
-  #       raise "Exception #: #{sleep_number}"
-  #     else
-  #       sleep(sleep_number)
-  #       # Rails.logger.debug "Response img №2: #{sleep_number}"
-  #       response = HTTParty.get("http://jsonplaceholder.typicode.com/photos/#{random_number}")
-  #       image = JSON.parse(response.body)
-  #       if image['url'][-6..-1].to_i(16)  > image['thumbnailUrl'][-6..-1].to_i(16)
-  #         return image['url']
-  #       else
-  #         return 1
-  #       end
-  #     end
-  #   rescue Exception=>e
-  #     Rails.logger.error { "Encountered an error when trying get photos, #{e}" }
-  #     return false
-  #   end
-  # end
-
-
-  # def send_todos
-  #   tries ||= 3
-  #   begin
-  #     sleep_number = (1..6).to_a.sample
-  #     if sleep_number > 3
-  #       sleep(sleep_number)
-  #       Rails.logger.debug "Response send_todos: #{sleep_number}"
-  #       raise "Exception #: #{sleep_number}"
-  #     else
-  #       sleep(sleep_number)
-  #       response = HTTParty.post("http://jsonplaceholder.typicode.com/todos",
-  #                                {
-  #                                  :data => { title: 'foo', body: 'bar', userId: 1 }
-  #                                }
-  #                                )
-  #       post = JSON.parse(response.body)
-  #       post['id']
-  #     end
-  #   rescue Exception=>e
-  #     Rails.logger.error { "Encountered an error when trying send todos, #{e}" }
-  #     if (tries -= 1) > 0
-  #       retry
-  #     else
-  #       return false
-  #     end
-  #   end
-  # end
 end

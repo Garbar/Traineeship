@@ -5,11 +5,6 @@ module ErrorMessages
     end
   end
 
-  class RoleError < StandardError
-    def message
-      "Only users with role \'User\' can make purchases."
-    end
-  end
   class ImageError < StandardError
     def message
       "Unfortunately it was not possible to make a purchase now. Try again later"

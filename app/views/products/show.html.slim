@@ -6,11 +6,8 @@
         .col-md-4
           = image_tag "#{@product.image_url(:full)}", alt: "#{@product.title}",  class: "pull-left img-responsive postImg img-thumbnail margin10"
         .col-md-8
-          - if  @product.name_shop? && user_signed_in? && current_user.allow_product?
-            p
-              | Shop: #{@product.name_shop}
-          - if  @product.name_shop? && user_signed_in? && !current_user.allow_product?
-            p
-              = link_to 'Purchase Now', purchase_product_path(@product), method:'POST', class: "btn btn-primary btn-lg active purchase-link"
+          - if can? :see_shop, Product
+			= shop_name(@product)
+		  p
+		    = purchase_button(@product)
           = @product.description.html_safe
-= render 'shared/modal_purchase'

@@ -11,9 +11,8 @@
             = pro_product(p)
           p
             = p.description.truncate(200).html_safe
-          - if  p.name_shop? && user_signed_in? && current_user.allow_product?
-            p
-              | Shop: #{p.name_shop}
+          - if can? :see_shop, Product
+            = shop_name(p)
           p
             a.btn href="#{product_path(p)}"  Read more
   = paginate @products

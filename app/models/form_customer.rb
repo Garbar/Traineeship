@@ -25,7 +25,6 @@ class FormCustomer
   def save
     if valid?
       persist!
-      true
     else
       false
     end
@@ -34,7 +33,8 @@ class FormCustomer
   private
 
   def persist!
-    user = User.create!(email: email, role: 'customer', password: password, password_confirmation: password, avatar: avatar, shop_name: shop_name)
+    @user = User.create!(email: email, role: 'customer', password: password, password_confirmation: password, avatar: avatar, shop_name: shop_name)
+    @user.id
   end
 
 end

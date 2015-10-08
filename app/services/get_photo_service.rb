@@ -10,7 +10,7 @@ class GetPhotoService < PurchaseService
     sleep(@sleep_number)
     Rails.logger.debug "Response: #{@sleep_number}"
     raise ErrorMessages::RequestTimeoutError if @sleep_number > 3
-    photo_id = (1..5000).to_a.sample
+    photo_id = Random.new.rand(1..5000)
     response = self.class.get("/photos/#{photo_id}")
     if response.success?
       raise ErrorMessages::ImageError if hex_from_url(response['url']) < hex_from_url(response['thumbnailUrl'])
