@@ -1,0 +1,18 @@
+#wrap.container
+  .row
+    .col-md-6.col-md-offset-3
+      = form_for(@role, :url => registrations_admin_path, :html => {role: 'form', class: "form"}, validate: true) do |f|
+        legend Sign Up as Admin
+        .row
+            .col-xs-6.col-md-6
+              = f.text_field(:name, placeholder:"First Name", class: "form-control input-lg")
+            .col-xs-6.col-md-6
+              = f.text_field(:surname, placeholder:"Last Name", class: "form-control input-lg")
+        = f.date_field(:date_birth, class: "form-control input-lg")
+        label.control-label Upload Image of passport
+        = f.file_field(:passport, class: "form-control input-lg")
+        label.control-label Upload Avatar
+        = f.file_field(:avatar, class: "form-control input-lg")
+        = render "user", :f => f
+      br/
+      = link_to "Log in", new_user_session_path

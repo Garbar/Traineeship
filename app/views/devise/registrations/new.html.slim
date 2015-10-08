@@ -1,0 +1,33 @@
+#wrap.container
+  .row
+    .col-md-6.col-md-offset-3
+      = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {role: 'form', class: "form"}) do |f|
+        legend Sign Up
+        = devise_error_messages!
+        / input.form-control.input-lg name="name" placeholder=("Name") type="text" value="" /
+        label.control-label Select your role
+        = f.select(:role, options_for_select([['User', 'user'], ['Customer', 'customer'], ['Admin', 'admin']]), {}, {:class => "form-control input-lg"} )
+        .role-admin
+          .row
+            .col-xs-6.col-md-6
+              = f.text_field(:name, placeholder:"First Name", class: "form-control input-lg")
+            .col-xs-6.col-md-6
+              = f.text_field(:surname, placeholder:"Last Name", class: "form-control input-lg")
+          = f.date_field(:date_birth, class: "form-control input-lg")
+          label.control-label Upload Image of passport
+          = f.file_field(:passport, class: "form-control input-lg")
+        .avatar
+          label.control-label Upload Avatar
+          = f.file_field(:avatar, class: "form-control input-lg")
+        .role-customer
+          = f.text_field(:shop_name, placeholder:"Name of Shop", class: "form-control input-lg")
+        = f.email_field(:email, placeholder:"Your Email", class: "form-control input-lg")
+        = f.password_field(:password, placeholder:"Password", class: "form-control input-lg")
+        = f.password_field(:password_confirmation, placeholder:"Confirm Password", class: "form-control input-lg")
+        .row
+          br/
+          button.btn.btn-lg.btn-primary.btn-block.signup-btn type="submit"
+            | Create my account
+      br/
+      = render "devise/shared/links"
+

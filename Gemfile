@@ -18,9 +18,14 @@ gem 'slim-rails'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'kaminari'
+gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
+gem 'httparty'
+gem 'virtus'
+gem 'cancancan'
 group :development do
   gem 'quiet_assets'
   gem 'meta_request'
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
+  gem "letter_opener"
 end

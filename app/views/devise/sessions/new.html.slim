@@ -1,0 +1,17 @@
+#wrap.container
+  .row
+    .col-md-6.col-md-offset-3
+      = form_for(resource, as: resource_name, url: session_path(resource_name), :html => {role: 'form', class: "form"}) do |f|
+        legend Log in
+        = devise_error_messages!
+        = f.email_field(:email, placeholder:"Your Email", class: "form-control input-lg")
+        = f.password_field(:password, placeholder:"Password", class: "form-control input-lg")
+        .form-group.text-center
+          = f.check_box :remember_me
+          label for="remember"  Remember Me
+        .row
+          br/
+          button.btn.btn-lg.btn-primary.btn-block.signup-btn type="submit"
+            | Log in
+      br/
+      = render "devise/shared/links"

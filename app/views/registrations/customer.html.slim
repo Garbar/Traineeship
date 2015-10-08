@@ -1,0 +1,11 @@
+#wrap.container
+  .row
+    .col-md-6.col-md-offset-3
+      = form_for(@role, :url => registrations_customer_path, :html => {role: 'form', class: "form"}, validate: true) do |f|
+        legend Sign Up as Customer
+        label.control-label Upload Avatar
+        = f.file_field(:avatar, class: "form-control input-lg")
+        = f.text_field(:shop_name, placeholder:"Name of Shop", class: "form-control input-lg")
+        = render "user", :f => f
+      br/
+      = link_to "Log in", new_user_session_path

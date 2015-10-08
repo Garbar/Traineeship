@@ -24,3 +24,4 @@ module Traineeship
       g.helper      = false
     end
   end
+end
